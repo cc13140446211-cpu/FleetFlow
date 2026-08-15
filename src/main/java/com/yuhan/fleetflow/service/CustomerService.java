@@ -18,4 +18,13 @@ public class CustomerService {
     public List<Customer> getAllCustomers() {
         return customerMapper.findAll();
     }
+
+    public Customer getCustomerById(Long id) {
+        return customerMapper.findById(id);
+    }
+
+    public Customer createCustomer(Customer customer) {
+        customerMapper.insert(customer);
+        return customer;
+    }
 }
