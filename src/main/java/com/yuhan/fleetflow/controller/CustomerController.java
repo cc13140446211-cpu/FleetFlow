@@ -3,6 +3,7 @@ package com.yuhan.fleetflow.controller;
 import com.yuhan.fleetflow.dto.request.CreateCustomerRequest;
 import com.yuhan.fleetflow.model.Customer;
 import com.yuhan.fleetflow.service.CustomerService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,7 +29,8 @@ public class CustomerController {
     }
 
     @PostMapping
-    public Customer createCustomer(@RequestBody CreateCustomerRequest request) {
+    public Customer createCustomer(
+            @Valid @RequestBody CreateCustomerRequest request) {
         return customerService.createCustomer(request);
     }
 }

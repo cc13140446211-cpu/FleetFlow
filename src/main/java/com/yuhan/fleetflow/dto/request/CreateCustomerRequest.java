@@ -1,13 +1,28 @@
 package com.yuhan.fleetflow.dto.request;
 
+import jakarta.validation.constraints.*;
+
 public class CreateCustomerRequest {
 
+    @NotBlank(message = "Customer name is required")
+    @Size(max = 100, message = "Customer name must not exceed 100 characters")
     private String custName;
+
+    @Size(max = 100, message = "Company name must not exceed 100 characters")
     private String custCompanyName;
+
+    @NotBlank(message = "Phone number is required")
+    @Size(max = 20, message = "Phone number must not exceed 20 characters")
     private String custPhone;
+
+    @NotBlank(message = "Email is required")
+    @Email(message = "Email format is invalid")
     private String custEmail;
+
+    @Size(max = 255, message = "Address must not exceed 255 characters")
     private String custAddress;
 
+    //getter and setter
     public String getCustName() {
         return custName;
     }

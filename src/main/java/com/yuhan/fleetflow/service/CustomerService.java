@@ -1,6 +1,7 @@
 package com.yuhan.fleetflow.service;
 
 import com.yuhan.fleetflow.dto.request.CreateCustomerRequest;
+import com.yuhan.fleetflow.exception.CustomerNotFoundException;
 import com.yuhan.fleetflow.mapper.CustomerMapper;
 import com.yuhan.fleetflow.model.Customer;
 import org.springframework.stereotype.Service;
@@ -21,7 +22,13 @@ public class CustomerService {
     }
 
     public Customer getCustomerById(Long id) {
-        return customerMapper.findById(id);
+        Customer customer = customerMapper.findById(id);
+
+        if (customer == null) {
+            throw new CustomerNotFoundException(id);
+        }
+
+        return customer;
     }
 
     public Customer createCustomer(CreateCustomerRequest request) {
