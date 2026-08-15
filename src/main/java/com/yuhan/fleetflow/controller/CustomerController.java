@@ -1,5 +1,6 @@
 package com.yuhan.fleetflow.controller;
 
+import com.yuhan.fleetflow.dto.request.CreateCustomerRequest;
 import com.yuhan.fleetflow.model.Customer;
 import com.yuhan.fleetflow.service.CustomerService;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +28,7 @@ public class CustomerController {
     }
 
     @PostMapping
-    public Customer createCustomer(@RequestBody Customer customer) {
-        return customerService.createCustomer(customer);
+    public Customer createCustomer(@RequestBody CreateCustomerRequest request) {
+        return customerService.createCustomer(request);
     }
 }
