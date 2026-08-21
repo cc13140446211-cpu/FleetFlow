@@ -1,0 +1,8 @@
+package com.yuhan.fleetflow.exception;
+
+public class ResourceUnavailableException extends RuntimeException {
+
+    public ResourceUnavailableException(String message) {
+        super(message);
+    }
+}

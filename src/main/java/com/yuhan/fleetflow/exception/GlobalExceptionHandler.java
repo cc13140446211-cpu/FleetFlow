@@ -130,5 +130,18 @@ public class GlobalExceptionHandler {
                 .body(error);
     }
 
+    @ExceptionHandler(ResourceUnavailableException.class)
+    public ResponseEntity<Map<String, String>> handleResourceUnavailable(
+            ResourceUnavailableException ex
+    ) {
+
+        Map<String, String> error = new HashMap<>();
+        error.put("error", ex.getMessage());
+
+        return ResponseEntity
+                .status(HttpStatus.CONFLICT)
+                .body(error);
+    }
+
 
 }

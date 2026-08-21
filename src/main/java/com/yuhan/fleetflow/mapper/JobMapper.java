@@ -6,6 +6,8 @@ import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
 import org.apache.ibatis.annotations.Select;
 
+import java.time.LocalDateTime;
+
 @Mapper
 public interface JobMapper {
 
@@ -57,4 +59,32 @@ public interface JobMapper {
         WHERE quote_id = #{quoteId}
         """)
     int countByQuoteId(Long quoteId);
+
+    @Select("""
+    SELECT COUNT(*)
+    FROM job
+    WHERE driver_emp_id = #{driverEmpId}
+      AND job_status IN ('SCHEDULED', 'IN_PROGRESS')
+      AND job_pickup_datetime < #{newEnd}
+      AND job_expected_dropoff_datetime > #{newStart}
+    """)
+    int countDriverConflicts(
+            Long driverEmpId,
+            LocalDateTime newStart,
+            LocalDateTime newEnd
+    );
+
+    @Select("""
+    SELECT COUNT(*)
+    FROM job
+    WHERE truck_id = #{truckId}
+      AND job_status IN ('SCHEDULED', 'IN_PROGRESS')
+      AND job_pickup_datetime < #{newEnd}
+      AND job_expected_dropoff_datetime > #{newStart}
+    """)
+    int countTruckConflicts(
+            Long truckId,
+            LocalDateTime newStart,
+            LocalDateTime newEnd
+    );
 }

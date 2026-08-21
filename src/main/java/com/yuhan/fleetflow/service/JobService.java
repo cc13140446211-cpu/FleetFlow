@@ -12,6 +12,8 @@ import com.yuhan.fleetflow.model.Quote;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+
 @Service
 public class JobService {
 
@@ -99,6 +101,40 @@ public class JobService {
 
             throw new InvalidJobStateException(
                     "Expected drop-off time must be after pickup time"
+            );
+        }
+
+        LocalDateTime pickupTime =
+                request.getJobPickupDatetime();
+
+        LocalDateTime dropoffTime =
+                request.getJobExpectedDropoffDatetime();
+
+        int driverConflicts =
+                jobMapper.countDriverConflicts(
+                        request.getDriverEmpId(),
+                        pickupTime,
+                        dropoffTime
+                );
+
+        if (driverConflicts > 0) {
+            throw new ResourceUnavailableException(
+                    "Driver " + request.getDriverEmpId()
+                            + " is unavailable during the requested time"
+            );
+        }
+
+        int truckConflicts =
+                jobMapper.countTruckConflicts(
+                        request.getTruckId(),
+                        pickupTime,
+                        dropoffTime
+                );
+
+        if (truckConflicts > 0) {
+            throw new ResourceUnavailableException(
+                    "Truck " + request.getTruckId()
+                            + " is unavailable during the requested time"
             );
         }
 
