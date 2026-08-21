@@ -2,12 +2,12 @@ package com.yuhan.fleetflow.dto.request;
 
 import jakarta.validation.constraints.NotBlank;
 
-public class UpdatePaymentStatusRequest {
+public class UpdateQuotePaymentRequest {
 
     @NotBlank(message = "Payment status is required")
     private String status;
 
-    public UpdatePaymentStatusRequest() {
+    public UpdateQuotePaymentRequest() {
     }
 
     public String getStatus() {

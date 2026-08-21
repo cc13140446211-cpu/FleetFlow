@@ -2,7 +2,6 @@ package com.yuhan.fleetflow.controller;
 
 import com.yuhan.fleetflow.dto.request.CreateJobRequest;
 import com.yuhan.fleetflow.dto.request.UpdateJobStatusRequest;
-import com.yuhan.fleetflow.dto.request.UpdatePaymentStatusRequest;
 import com.yuhan.fleetflow.model.Job;
 import com.yuhan.fleetflow.service.JobService;
 import jakarta.validation.Valid;
@@ -43,13 +42,5 @@ public class JobController {
             @Valid @RequestBody UpdateJobStatusRequest request
     ) {
         return jobService.updateJobStatus(id, request);
-    }
-
-    @PatchMapping("/api/jobs/{id}/payment")
-    public Job updatePaymentStatus(
-            @PathVariable Long id,
-            @Valid @RequestBody UpdatePaymentStatusRequest request
-    ) {
-        return jobService.updatePaymentStatus(id, request);
     }
 }

@@ -43,7 +43,6 @@ public interface JobMapper {
                 job_expected_dropoff_datetime AS jobExpectedDropoffDatetime,
                 job_final_price AS jobFinalPrice,
                 job_status AS jobStatus,
-                job_payment_status AS jobPaymentStatus,
                 job_created_at AS jobCreatedAt,
                 job_updated_at AS jobUpdatedAt
             FROM job
@@ -62,7 +61,6 @@ public interface JobMapper {
         job_expected_dropoff_datetime AS jobExpectedDropoffDatetime,
         job_final_price AS jobFinalPrice,
         job_status AS jobStatus,
-        job_payment_status AS jobPaymentStatus,
         job_created_at AS jobCreatedAt,
         job_updated_at AS jobUpdatedAt
     FROM job
@@ -111,10 +109,4 @@ public interface JobMapper {
             """)
     int updateStatus(Long id, String status);
 
-    @Update("""
-    UPDATE job
-    SET job_payment_status = #{status}
-    WHERE job_id = #{id}
-    """)
-    int updatePaymentStatus(Long id, String status);
 }

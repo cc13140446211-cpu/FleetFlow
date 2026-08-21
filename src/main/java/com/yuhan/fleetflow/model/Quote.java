@@ -14,6 +14,7 @@ public class Quote {
     private LocalDate quotePreferredPickupDate;
     private BigDecimal quotePrice;
     private String quoteStatus;
+    private String quotePaymentStatus;
     private LocalDateTime quoteCreatedAt;
     private LocalDateTime quoteUpdatedAt;
 
@@ -82,6 +83,14 @@ public class Quote {
 
     public void setQuoteStatus(String quoteStatus) {
         this.quoteStatus = quoteStatus;
+    }
+
+    public String getQuotePaymentStatus() {
+        return quotePaymentStatus;
+    }
+
+    public void setQuotePaymentStatus(String quotePaymentStatus) {
+        this.quotePaymentStatus = quotePaymentStatus;
     }
 
     public LocalDateTime getQuoteCreatedAt() {

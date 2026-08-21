@@ -161,6 +161,9 @@ CREATE TABLE quote (
     quote_status VARCHAR(20) NOT NULL DEFAULT 'PENDING'
         COMMENT 'Quote status: PENDING, ACCEPTED, REJECTED, or CONVERTED',
 
+    quote_payment_status VARCHAR(20) NOT NULL DEFAULT 'UNPAID'
+        COMMENT 'Payment status: UNPAID or PAID',
+
     quote_created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
         COMMENT 'Date and time the quote was created',
 
@@ -189,6 +192,14 @@ CREATE TABLE quote (
                 'REJECTED',
                 'CANCELLED',
                 'CONVERTED'
+            )
+        ),
+
+    CONSTRAINT chk_quote_payment_status
+        CHECK (
+            quote_payment_status IN (
+                'UNPAID',
+                'PAID'
             )
         )
 )
@@ -226,9 +237,6 @@ CREATE TABLE job (
 
     job_status VARCHAR(20) NOT NULL DEFAULT 'SCHEDULED'
         COMMENT 'Job status: SCHEDULED, IN_PROGRESS, COMPLETED, or CANCELLED',
-
-    job_payment_status VARCHAR(20) NOT NULL DEFAULT 'UNPAID'
-        COMMENT 'Payment status: UNPAID or PAID',
 
     job_created_at DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
         COMMENT 'Date and time the job record was created',
@@ -273,14 +281,6 @@ CREATE TABLE job (
                 'IN_PROGRESS',
                 'COMPLETED',
                 'CANCELLED'
-            )
-        ),
-
-    CONSTRAINT chk_job_payment_status
-        CHECK (
-            job_payment_status IN (
-                'UNPAID',
-                'PAID'
             )
         )
 )

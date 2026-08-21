@@ -22,6 +22,7 @@ public interface QuoteMapper {
             quote_preferred_pickup_date AS quotePreferredPickupDate,
             quote_price AS quotePrice,
             quote_status AS quoteStatus,
+            quote_payment_status AS quotePaymentStatus,
             quote_created_at AS quoteCreatedAt,
             quote_updated_at AS quoteUpdatedAt
         FROM quote
@@ -38,6 +39,7 @@ public interface QuoteMapper {
             quote_preferred_pickup_date AS quotePreferredPickupDate,
             quote_price AS quotePrice,
             quote_status AS quoteStatus,
+            quote_payment_status AS quotePaymentStatus,
             quote_created_at AS quoteCreatedAt,
             quote_updated_at AS quoteUpdatedAt
         FROM quote
@@ -75,4 +77,11 @@ public interface QuoteMapper {
     WHERE quote_id = #{id}
     """)
     int updateStatus(Long id, String status);
+
+    @Update("""
+    UPDATE quote
+    SET quote_payment_status = #{status}
+    WHERE quote_id = #{id}
+    """)
+    int updatePaymentStatus(Long id, String status);
 }

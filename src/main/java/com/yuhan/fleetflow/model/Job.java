@@ -14,7 +14,6 @@ public class Job {
     private LocalDateTime jobExpectedDropoffDatetime;
     private BigDecimal jobFinalPrice;
     private String jobStatus;
-    private String jobPaymentStatus;
     private LocalDateTime jobCreatedAt;
     private LocalDateTime jobUpdatedAt;
 
@@ -91,14 +90,6 @@ public class Job {
 
     public void setJobStatus(String jobStatus) {
         this.jobStatus = jobStatus;
-    }
-
-    public String getJobPaymentStatus() {
-        return jobPaymentStatus;
-    }
-
-    public void setJobPaymentStatus(String jobPaymentStatus) {
-        this.jobPaymentStatus = jobPaymentStatus;
     }
 
     public LocalDateTime getJobCreatedAt() {
