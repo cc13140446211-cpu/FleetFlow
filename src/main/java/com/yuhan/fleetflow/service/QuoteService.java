@@ -1,6 +1,7 @@
 package com.yuhan.fleetflow.service;
 
 import com.yuhan.fleetflow.dto.request.CreateQuoteRequest;
+import com.yuhan.fleetflow.dto.request.UpdateQuotePaymentRequest;
 import com.yuhan.fleetflow.exception.*;
 import com.yuhan.fleetflow.mapper.CustomerMapper;
 import com.yuhan.fleetflow.mapper.EmployeeMapper;
@@ -144,5 +145,41 @@ public class QuoteService {
         }
 
         return false;
+    }
+
+    public Quote updateQuotePaymentStatus(
+            Long id,
+            UpdateQuotePaymentRequest request
+    ) {
+
+        Quote quote = quoteMapper.findById(id);
+
+        if (quote == null) {
+            throw new QuoteNotFoundException(id);
+        }
+
+        if (!"ACCEPTED".equals(quote.getQuoteStatus())) {
+            throw new InvalidQuoteStateException(
+                    "Only ACCEPTED quotes can be paid"
+            );
+        }
+
+        String newStatus = request.getStatus().toUpperCase();
+
+        if (!"PAID".equals(newStatus)) {
+            throw new InvalidQuoteStateException(
+                    "Payment status can only be changed to PAID"
+            );
+        }
+
+        if ("PAID".equals(quote.getQuotePaymentStatus())) {
+            throw new InvalidQuoteStateException(
+                    "Quote has already been paid"
+            );
+        }
+
+        quoteMapper.updatePaymentStatus(id, "PAID");
+
+        return quoteMapper.findById(id);
     }
 }

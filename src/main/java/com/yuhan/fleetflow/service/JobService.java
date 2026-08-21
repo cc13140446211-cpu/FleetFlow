@@ -2,7 +2,6 @@ package com.yuhan.fleetflow.service;
 
 import com.yuhan.fleetflow.dto.request.CreateJobRequest;
 import com.yuhan.fleetflow.dto.request.UpdateJobStatusRequest;
-import com.yuhan.fleetflow.dto.request.UpdatePaymentStatusRequest;
 import com.yuhan.fleetflow.exception.*;
 import com.yuhan.fleetflow.mapper.EmployeeMapper;
 import com.yuhan.fleetflow.mapper.JobMapper;
@@ -52,6 +51,12 @@ public class JobService {
         if (!"ACCEPTED".equals(quote.getQuoteStatus())) {
             throw new InvalidQuoteStateException(
                     "Only ACCEPTED quotes can be converted to jobs"
+            );
+        }
+
+        if (!"PAID".equals(quote.getQuotePaymentStatus())) {
+            throw new InvalidQuoteStateException(
+                    "Quote must be paid before a job can be scheduled"
             );
         }
 
@@ -231,39 +236,5 @@ public class JobService {
         }
 
         return false;
-    }
-
-    public Job updatePaymentStatus(
-            Long id,
-            UpdatePaymentStatusRequest request
-    ) {
-
-        Job job = jobMapper.findById(id);
-
-        if (job == null) {
-            throw new JobNotFoundException(id);
-        }
-
-        String newStatus = request.getStatus().toUpperCase();
-
-        if (!newStatus.equals("PAID")
-                && !newStatus.equals("UNPAID")) {
-
-            throw new InvalidJobStateException(
-                    "Payment status must be PAID or UNPAID"
-            );
-        }
-
-        if ("PAID".equals(job.getJobPaymentStatus())
-                && newStatus.equals("UNPAID")) {
-
-            throw new InvalidJobStateException(
-                    "Paid jobs cannot be changed back to unpaid"
-            );
-        }
-
-        jobMapper.updatePaymentStatus(id, newStatus);
-
-        return jobMapper.findById(id);
     }
 }
