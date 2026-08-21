@@ -2,10 +2,14 @@ package com.yuhan.fleetflow.service;
 
 import com.yuhan.fleetflow.dto.request.CreateQuoteRequest;
 import com.yuhan.fleetflow.exception.CustomerNotFoundException;
+import com.yuhan.fleetflow.exception.EmployeeNotFoundException;
+import com.yuhan.fleetflow.exception.InvalidEmployeeRoleException;
 import com.yuhan.fleetflow.exception.QuoteNotFoundException;
 import com.yuhan.fleetflow.mapper.CustomerMapper;
+import com.yuhan.fleetflow.mapper.EmployeeMapper;
 import com.yuhan.fleetflow.mapper.QuoteMapper;
 import com.yuhan.fleetflow.model.Customer;
+import com.yuhan.fleetflow.model.Employee;
 import com.yuhan.fleetflow.model.Quote;
 import org.springframework.stereotype.Service;
 
@@ -16,13 +20,16 @@ public class QuoteService {
 
     private final QuoteMapper quoteMapper;
     private final CustomerMapper customerMapper;
+    private final EmployeeMapper employeeMapper;
 
     public QuoteService(
             QuoteMapper quoteMapper,
-            CustomerMapper customerMapper
+            CustomerMapper customerMapper,
+            EmployeeMapper employeeMapper
     ) {
         this.quoteMapper = quoteMapper;
         this.customerMapper = customerMapper;
+        this.employeeMapper = employeeMapper;
     }
 
     public List<Quote> getAllQuotes() {
@@ -46,6 +53,24 @@ public class QuoteService {
 
         if (customer == null) {
             throw new CustomerNotFoundException(request.getCustId());
+        }
+
+        Employee employee =
+                employeeMapper.findById(
+                        request.getPreparedByEmpId()
+                );
+
+        if (employee == null) {
+            throw new EmployeeNotFoundException(
+                    request.getPreparedByEmpId()
+            );
+        }
+
+        if (!"DISPATCHER".equals(employee.getEmpRole())) {
+            throw new InvalidEmployeeRoleException(
+                    employee.getEmpId(),
+                    "DISPATCHER"
+            );
         }
 
         Quote quote = new Quote();
