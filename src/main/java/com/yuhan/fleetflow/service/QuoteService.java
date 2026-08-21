@@ -98,25 +98,51 @@ public class QuoteService {
             throw new QuoteNotFoundException(id);
         }
 
+        String currentStatus = quote.getQuoteStatus();
         String newStatus = request.getStatus().toUpperCase();
 
-        if (!newStatus.equals("ACCEPTED")
-                && !newStatus.equals("REJECTED")) {
-
+        if (!isValidQuoteStatus(newStatus)) {
             throw new InvalidQuoteStatusException(
-                    "Quote status can only be ACCEPTED or REJECTED"
+                    "Invalid quote status: " + newStatus
             );
         }
 
-        if (!quote.getQuoteStatus().equals("PENDING")) {
-
+        if (!isValidStatusTransition(currentStatus, newStatus)) {
             throw new InvalidQuoteStateException(
-                    "Only PENDING quotes can be accepted or rejected"
+                    "Cannot change quote status from "
+                            + currentStatus
+                            + " to "
+                            + newStatus
             );
         }
 
         quoteMapper.updateStatus(id, newStatus);
 
         return quoteMapper.findById(id);
+    }
+
+    private boolean isValidQuoteStatus(String status) {
+        return status.equals("PENDING")
+                || status.equals("ACCEPTED")
+                || status.equals("REJECTED")
+                || status.equals("CANCELLED")
+                || status.equals("CONVERTED");
+    }
+
+    private boolean isValidStatusTransition(
+            String currentStatus,
+            String newStatus
+    ) {
+
+        if (currentStatus.equals("PENDING")) {
+            return newStatus.equals("ACCEPTED")
+                    || newStatus.equals("REJECTED");
+        }
+
+        if (currentStatus.equals("ACCEPTED")) {
+            return newStatus.equals("CANCELLED");
+        }
+
+        return false;
     }
 }

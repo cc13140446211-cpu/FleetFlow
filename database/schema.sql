@@ -187,6 +187,7 @@ CREATE TABLE quote (
                 'PENDING',
                 'ACCEPTED',
                 'REJECTED',
+                'CANCELLED',
                 'CONVERTED'
             )
         )
