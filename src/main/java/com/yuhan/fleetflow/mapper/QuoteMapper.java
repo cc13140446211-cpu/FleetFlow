@@ -1,6 +1,7 @@
 package com.yuhan.fleetflow.mapper;
 
 import com.yuhan.fleetflow.model.Quote;
+import org.apache.ibatis.annotations.Update;
 import org.apache.ibatis.annotations.Insert;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Options;
@@ -67,4 +68,11 @@ public interface QuoteMapper {
             keyProperty = "quoteId"
     )
     int insert(Quote quote);
+
+    @Update("""
+    UPDATE quote
+    SET quote_status = #{status}
+    WHERE quote_id = #{id}
+    """)
+    int updateStatus(Long id, String status);
 }

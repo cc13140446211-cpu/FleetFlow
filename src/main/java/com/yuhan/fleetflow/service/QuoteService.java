@@ -1,10 +1,7 @@
 package com.yuhan.fleetflow.service;
 
 import com.yuhan.fleetflow.dto.request.CreateQuoteRequest;
-import com.yuhan.fleetflow.exception.CustomerNotFoundException;
-import com.yuhan.fleetflow.exception.EmployeeNotFoundException;
-import com.yuhan.fleetflow.exception.InvalidEmployeeRoleException;
-import com.yuhan.fleetflow.exception.QuoteNotFoundException;
+import com.yuhan.fleetflow.exception.*;
 import com.yuhan.fleetflow.mapper.CustomerMapper;
 import com.yuhan.fleetflow.mapper.EmployeeMapper;
 import com.yuhan.fleetflow.mapper.QuoteMapper;
@@ -12,6 +9,7 @@ import com.yuhan.fleetflow.model.Customer;
 import com.yuhan.fleetflow.model.Employee;
 import com.yuhan.fleetflow.model.Quote;
 import org.springframework.stereotype.Service;
+import com.yuhan.fleetflow.dto.request.UpdateQuoteStatusRequest;
 
 import java.util.List;
 
@@ -87,5 +85,38 @@ public class QuoteService {
         quoteMapper.insert(quote);
 
         return quoteMapper.findById(quote.getQuoteId());
+    }
+
+    public Quote updateQuoteStatus(
+            Long id,
+            UpdateQuoteStatusRequest request
+    ) {
+
+        Quote quote = quoteMapper.findById(id);
+
+        if (quote == null) {
+            throw new QuoteNotFoundException(id);
+        }
+
+        String newStatus = request.getStatus().toUpperCase();
+
+        if (!newStatus.equals("ACCEPTED")
+                && !newStatus.equals("REJECTED")) {
+
+            throw new InvalidQuoteStatusException(
+                    "Quote status can only be ACCEPTED or REJECTED"
+            );
+        }
+
+        if (!quote.getQuoteStatus().equals("PENDING")) {
+
+            throw new InvalidQuoteStateException(
+                    "Only PENDING quotes can be accepted or rejected"
+            );
+        }
+
+        quoteMapper.updateStatus(id, newStatus);
+
+        return quoteMapper.findById(id);
     }
 }
