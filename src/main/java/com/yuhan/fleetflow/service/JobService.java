@@ -1,6 +1,8 @@
 package com.yuhan.fleetflow.service;
 
 import com.yuhan.fleetflow.dto.request.CreateJobRequest;
+import com.yuhan.fleetflow.dto.request.UpdateJobStatusRequest;
+import com.yuhan.fleetflow.dto.request.UpdatePaymentStatusRequest;
 import com.yuhan.fleetflow.exception.*;
 import com.yuhan.fleetflow.mapper.EmployeeMapper;
 import com.yuhan.fleetflow.mapper.JobMapper;
@@ -13,6 +15,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class JobService {
@@ -155,5 +158,112 @@ public class JobService {
         quoteMapper.updateStatus(quoteId, "CONVERTED");
 
         return jobMapper.findById(job.getJobId());
+    }
+
+    public List<Job> getAllJobs() {
+        return jobMapper.findAll();
+    }
+
+    public Job getJobById(Long id) {
+
+        Job job = jobMapper.findById(id);
+
+        if (job == null) {
+            throw new JobNotFoundException(id);
+        }
+
+        return job;
+    }
+
+    public Job updateJobStatus(
+            Long id,
+            UpdateJobStatusRequest request
+    ) {
+
+        Job job = jobMapper.findById(id);
+
+        if (job == null) {
+            throw new JobNotFoundException(id);
+        }
+
+        String currentStatus = job.getJobStatus();
+        String newStatus = request.getStatus().toUpperCase();
+
+        if (!isValidJobStatus(newStatus)) {
+            throw new InvalidJobStateException(
+                    "Invalid job status: " + newStatus
+            );
+        }
+
+        if (!isValidJobStatusTransition(currentStatus, newStatus)) {
+            throw new InvalidJobStateException(
+                    "Cannot change job status from "
+                            + currentStatus
+                            + " to "
+                            + newStatus
+            );
+        }
+
+        jobMapper.updateStatus(id, newStatus);
+
+        return jobMapper.findById(id);
+    }
+
+    private boolean isValidJobStatus(String status) {
+        return status.equals("SCHEDULED")
+                || status.equals("IN_PROGRESS")
+                || status.equals("COMPLETED")
+                || status.equals("CANCELLED");
+    }
+
+    private boolean isValidJobStatusTransition(
+            String currentStatus,
+            String newStatus
+    ) {
+
+        if (currentStatus.equals("SCHEDULED")) {
+            return newStatus.equals("IN_PROGRESS")
+                    || newStatus.equals("CANCELLED");
+        }
+
+        if (currentStatus.equals("IN_PROGRESS")) {
+            return newStatus.equals("COMPLETED");
+        }
+
+        return false;
+    }
+
+    public Job updatePaymentStatus(
+            Long id,
+            UpdatePaymentStatusRequest request
+    ) {
+
+        Job job = jobMapper.findById(id);
+
+        if (job == null) {
+            throw new JobNotFoundException(id);
+        }
+
+        String newStatus = request.getStatus().toUpperCase();
+
+        if (!newStatus.equals("PAID")
+                && !newStatus.equals("UNPAID")) {
+
+            throw new InvalidJobStateException(
+                    "Payment status must be PAID or UNPAID"
+            );
+        }
+
+        if ("PAID".equals(job.getJobPaymentStatus())
+                && newStatus.equals("UNPAID")) {
+
+            throw new InvalidJobStateException(
+                    "Paid jobs cannot be changed back to unpaid"
+            );
+        }
+
+        jobMapper.updatePaymentStatus(id, newStatus);
+
+        return jobMapper.findById(id);
     }
 }

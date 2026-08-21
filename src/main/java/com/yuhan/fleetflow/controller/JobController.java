@@ -1,13 +1,16 @@
 package com.yuhan.fleetflow.controller;
 
 import com.yuhan.fleetflow.dto.request.CreateJobRequest;
+import com.yuhan.fleetflow.dto.request.UpdateJobStatusRequest;
+import com.yuhan.fleetflow.dto.request.UpdatePaymentStatusRequest;
 import com.yuhan.fleetflow.model.Job;
 import com.yuhan.fleetflow.service.JobService;
 import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
-@RequestMapping("/api/quotes")
 public class JobController {
 
     private final JobService jobService;
@@ -16,11 +19,37 @@ public class JobController {
         this.jobService = jobService;
     }
 
-    @PostMapping("/{quoteId}/jobs")
+    @PostMapping("/api/quotes/{quoteId}/jobs")
     public Job createJobFromQuote(
             @PathVariable Long quoteId,
             @Valid @RequestBody CreateJobRequest request
     ) {
         return jobService.createJobFromQuote(quoteId, request);
+    }
+
+    @GetMapping("/api/jobs")
+    public List<Job> getAllJobs() {
+        return jobService.getAllJobs();
+    }
+
+    @GetMapping("/api/jobs/{id}")
+    public Job getJobById(@PathVariable Long id) {
+        return jobService.getJobById(id);
+    }
+
+    @PatchMapping("/api/jobs/{id}/status")
+    public Job updateJobStatus(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateJobStatusRequest request
+    ) {
+        return jobService.updateJobStatus(id, request);
+    }
+
+    @PatchMapping("/api/jobs/{id}/payment")
+    public Job updatePaymentStatus(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdatePaymentStatusRequest request
+    ) {
+        return jobService.updatePaymentStatus(id, request);
     }
 }
