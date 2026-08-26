@@ -1,6 +1,7 @@
 package com.yuhan.fleetflow.service;
 
 import com.yuhan.fleetflow.dto.request.CreateJobRequest;
+import com.yuhan.fleetflow.exception.InvalidJobStateException;
 import com.yuhan.fleetflow.exception.InvalidQuoteStateException;
 import com.yuhan.fleetflow.exception.QuoteNotFoundException;
 import com.yuhan.fleetflow.exception.ResourceUnavailableException;
@@ -322,4 +323,67 @@ public class JobServiceTest {
 
         return request;
     }
+
+    @Test
+    void shouldRejectJobCreationWhenQuoteAlreadyHasJob() {
+
+        Quote quote = createAcceptedPaidQuote();
+        CreateJobRequest request = createValidJobRequest();
+
+        when(quoteMapper.findById(1L))
+                .thenReturn(quote);
+
+        when(jobMapper.countByQuoteId(1L))
+                .thenReturn(1);
+
+        assertThrows(
+                InvalidQuoteStateException.class,
+                () -> jobService.createJobFromQuote(1L, request)
+        );
+
+        verify(jobMapper, never())
+                .insert(any(Job.class));
+
+        verify(quoteMapper, never())
+                .updateStatus(1L, "CONVERTED");
+    }
+
+    @Test
+    void shouldRejectJobCreationWhenDropoffIsNotAfterPickup() {
+
+        Quote quote = createAcceptedPaidQuote();
+
+        Employee driver = createDriver();
+        Employee dispatcher = createDispatcher();
+
+        CreateJobRequest request = createValidJobRequest();
+
+        request.setJobExpectedDropoffDatetime(
+                request.getJobPickupDatetime()
+        );
+
+        when(quoteMapper.findById(1L))
+                .thenReturn(quote);
+
+        when(jobMapper.countByQuoteId(1L))
+                .thenReturn(0);
+
+        when(employeeMapper.findById(2L))
+                .thenReturn(driver);
+
+        when(employeeMapper.findById(1L))
+                .thenReturn(dispatcher);
+
+        when(truckMapper.existsById(1L))
+                .thenReturn(1);
+
+        assertThrows(
+                InvalidJobStateException.class,
+                () -> jobService.createJobFromQuote(1L, request)
+        );
+
+        verify(jobMapper, never())
+                .insert(any(Job.class));
+    }
+
 }
