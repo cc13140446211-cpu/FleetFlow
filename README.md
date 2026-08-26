@@ -344,15 +344,6 @@ Configure the database connection in:
 src/main/resources/application.properties
 ```
 
-Example:
-
-```properties
-spring.datasource.url=jdbc:mysql://localhost:3306/fleetflow
-spring.datasource.username=root
-spring.datasource.password=YOUR_PASSWORD
-```
-
-Do not commit real database passwords or other secrets to the repository.
 
 ### 6. Run the Application
 
