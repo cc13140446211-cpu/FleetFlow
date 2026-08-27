@@ -3,6 +3,7 @@ package com.yuhan.fleetflow.mapper;
 import com.yuhan.fleetflow.model.Job;
 import org.apache.ibatis.annotations.*;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -108,5 +109,33 @@ public interface JobMapper {
             WHERE job_id = #{id}
             """)
     int updateStatus(Long id, String status);
+
+    @Select("""
+    SELECT
+        job_id AS jobId,
+        quote_id AS quoteId,
+        driver_emp_id AS driverEmpId,
+        scheduled_by_emp_id AS scheduledByEmpId,
+        truck_id AS truckId,
+        job_pickup_datetime AS jobPickupDatetime,
+        job_expected_dropoff_datetime AS jobExpectedDropoffDatetime,
+        job_final_price AS jobFinalPrice,
+        job_status AS jobStatus,
+        job_created_at AS jobCreatedAt,
+        job_updated_at AS jobUpdatedAt
+    FROM job
+    WHERE
+        (#{status} IS NULL OR job_status = #{status})
+        AND
+        (
+            #{date} IS NULL
+            OR DATE(job_pickup_datetime) = #{date}
+        )
+    ORDER BY job_pickup_datetime DESC
+    """)
+    List<Job> findJobs(
+            @Param("status") String status,
+            @Param("date") LocalDate date
+    );
 
 }

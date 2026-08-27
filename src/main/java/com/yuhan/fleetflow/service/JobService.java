@@ -13,6 +13,7 @@ import com.yuhan.fleetflow.model.Quote;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -236,5 +237,35 @@ public class JobService {
         }
 
         return false;
+
+    }
+
+    public List<Job> getJobs(
+            String status,
+            LocalDate date
+    ) {
+
+        if (status != null) {
+            String normalizedStatus =
+                    status.toUpperCase();
+
+            if (!List.of(
+                    "SCHEDULED",
+                    "IN_PROGRESS",
+                    "COMPLETED",
+                    "CANCELLED"
+            ).contains(normalizedStatus)) {
+                throw new InvalidJobStatusException(
+                        "Invalid job status"
+                );
+            }
+
+            status = normalizedStatus;
+        }
+
+        return jobMapper.findJobs(
+                status,
+                date
+        );
     }
 }

@@ -5,8 +5,10 @@ import com.yuhan.fleetflow.dto.request.UpdateJobStatusRequest;
 import com.yuhan.fleetflow.model.Job;
 import com.yuhan.fleetflow.service.JobService;
 import jakarta.validation.Valid;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -26,11 +28,6 @@ public class JobController {
         return jobService.createJobFromQuote(quoteId, request);
     }
 
-    @GetMapping("/api/jobs")
-    public List<Job> getAllJobs() {
-        return jobService.getAllJobs();
-    }
-
     @GetMapping("/api/jobs/{id}")
     public Job getJobById(@PathVariable Long id) {
         return jobService.getJobById(id);
@@ -42,5 +39,23 @@ public class JobController {
             @Valid @RequestBody UpdateJobStatusRequest request
     ) {
         return jobService.updateJobStatus(id, request);
+    }
+
+    @GetMapping("/api/jobs")
+    public List<Job> getJobs(
+
+            @RequestParam(required = false)
+            String status,
+
+            @RequestParam(required = false)
+            @DateTimeFormat(
+                    iso = DateTimeFormat.ISO.DATE
+            )
+            LocalDate date
+    ) {
+        return jobService.getJobs(
+                status,
+                date
+        );
     }
 }
