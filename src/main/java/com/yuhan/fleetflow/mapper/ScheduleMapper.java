@@ -144,4 +144,47 @@ public interface ScheduleMapper {
             @Param("pickup") LocalDateTime pickup,
             @Param("dropoff") LocalDateTime dropoff
     );
+
+    @Select("""
+    SELECT
+        j.job_id AS jobId,
+
+        q.quote_pickup_location AS pickupLocation,
+        q.quote_dropoff_location AS dropoffLocation,
+
+        j.job_pickup_datetime AS pickupDatetime,
+        j.job_expected_dropoff_datetime AS expectedDropoffDatetime,
+
+        j.job_status AS jobStatus,
+
+        d.emp_id AS driverId,
+        d.emp_name AS driverName,
+
+        t.truck_id AS truckId,
+        t.truck_registration_number AS truckRegistrationNumber,
+        t.truck_model AS truckModel
+
+    FROM job j
+
+    JOIN quote q
+        ON j.quote_id = q.quote_id
+
+    JOIN employee d
+        ON j.driver_emp_id = d.emp_id
+
+    JOIN truck t
+        ON j.truck_id = t.truck_id
+
+    WHERE j.driver_emp_id = #{driverId}
+
+      AND DATE(j.job_pickup_datetime) = #{date}
+
+      AND j.job_status <> 'CANCELLED'
+
+    ORDER BY j.job_pickup_datetime
+    """)
+    List<ScheduleJobResponse> findDriverScheduleByDate(
+            @Param("driverId") Long driverId,
+            @Param("date") LocalDate date
+    );
 }

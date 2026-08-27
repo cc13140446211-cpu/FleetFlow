@@ -1,9 +1,12 @@
 package com.yuhan.fleetflow.controller;
 
 import com.yuhan.fleetflow.dto.response.DriverResponse;
+import com.yuhan.fleetflow.dto.response.ScheduleJobResponse;
 import com.yuhan.fleetflow.service.DriverService;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -28,5 +31,21 @@ public class DriverController {
             @PathVariable Long id
     ) {
         return driverService.getDriverById(id);
+    }
+
+    @GetMapping("/{id}/schedule")
+    public List<ScheduleJobResponse> getDriverSchedule(
+            @PathVariable Long id,
+
+            @RequestParam
+            @DateTimeFormat(
+                    iso = DateTimeFormat.ISO.DATE
+            )
+            LocalDate date
+    ) {
+        return driverService.getDriverSchedule(
+                id,
+                date
+        );
     }
 }
