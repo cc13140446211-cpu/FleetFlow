@@ -1,20 +1,25 @@
 package com.yuhan.fleetflow.service;
 
+import com.yuhan.fleetflow.dto.response.ScheduleJobResponse;
 import com.yuhan.fleetflow.dto.response.TruckResponse;
 import com.yuhan.fleetflow.exception.TruckNotFoundException;
+import com.yuhan.fleetflow.mapper.ScheduleMapper;
 import com.yuhan.fleetflow.mapper.TruckMapper;
 import com.yuhan.fleetflow.model.Truck;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 @Service
 public class TruckService {
 
     private final TruckMapper truckMapper;
+    private final ScheduleMapper scheduleMapper;
 
-    public TruckService(TruckMapper truckMapper) {
+    public TruckService(TruckMapper truckMapper, ScheduleMapper scheduleMapper) {
         this.truckMapper = truckMapper;
+        this.scheduleMapper = scheduleMapper;
     }
 
     public List<TruckResponse> getAllTrucks() {
@@ -53,5 +58,23 @@ public class TruckService {
         );
 
         return response;
+    }
+
+    public List<ScheduleJobResponse> getTruckSchedule(
+            Long truckId,
+            LocalDate date
+    ) {
+
+        Truck truck =
+                truckMapper.findById(truckId);
+
+        if (truck == null) {
+            throw new TruckNotFoundException(truckId);
+        }
+
+        return scheduleMapper.findTruckScheduleByDate(
+                truckId,
+                date
+        );
     }
 }
