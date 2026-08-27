@@ -4,6 +4,7 @@ import com.yuhan.fleetflow.dto.request.CreateCustomerRequest;
 import com.yuhan.fleetflow.model.Customer;
 import com.yuhan.fleetflow.service.CustomerService;
 
+import com.yuhan.fleetflow.service.QuoteService;
 import org.junit.jupiter.api.Test;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ class CustomerControllerTest {
 
     @MockitoBean
     private CustomerService customerService;
+
+    @MockitoBean
+    private QuoteService quoteService;
 
     @Test
     void shouldReturnBadRequestWhenRequiredFieldsAreMissing() throws Exception {
