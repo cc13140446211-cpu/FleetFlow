@@ -182,4 +182,16 @@ public class QuoteService {
 
         return quoteMapper.findById(id);
     }
+
+    public List<Quote> getQuotesByCustomerId(Long customerId) {
+
+        Customer customer =
+                customerMapper.findById(customerId);
+
+        if (customer == null) {
+            throw new CustomerNotFoundException(customerId);
+        }
+
+        return quoteMapper.findByCustomerId(customerId);
+    }
 }

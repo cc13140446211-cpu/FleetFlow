@@ -1,11 +1,7 @@
 package com.yuhan.fleetflow.mapper;
 
 import com.yuhan.fleetflow.model.Quote;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Options;
-import org.apache.ibatis.annotations.Select;
+import org.apache.ibatis.annotations.*;
 
 import java.util.List;
 
@@ -84,4 +80,25 @@ public interface QuoteMapper {
     WHERE quote_id = #{id}
     """)
     int updatePaymentStatus(Long id, String status);
+
+    @Select("""
+    SELECT
+        quote_id AS quoteId,
+        cust_id AS custId,
+        prepared_by_emp_id AS preparedByEmpId,
+        quote_pickup_location AS quotePickupLocation,
+        quote_dropoff_location AS quoteDropoffLocation,
+        quote_preferred_pickup_date AS quotePreferredPickupDate,
+        quote_price AS quotePrice,
+        quote_status AS quoteStatus,
+        quote_payment_status AS quotePaymentStatus,
+        quote_created_at AS quoteCreatedAt,
+        quote_updated_at AS quoteUpdatedAt
+    FROM quote
+    WHERE cust_id = #{customerId}
+    ORDER BY quote_created_at DESC
+    """)
+    List<Quote> findByCustomerId(
+            @Param("customerId") Long customerId
+    );
 }
