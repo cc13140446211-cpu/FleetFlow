@@ -1,6 +1,7 @@
 package com.yuhan.fleetflow.service;
 
 import com.yuhan.fleetflow.dto.response.DriverResponse;
+import com.yuhan.fleetflow.exception.DriverNotFoundException;
 import com.yuhan.fleetflow.mapper.EmployeeMapper;
 import com.yuhan.fleetflow.model.Employee;
 import org.springframework.stereotype.Service;
@@ -30,9 +31,7 @@ public class DriverService {
                 employeeMapper.findDriverById(id);
 
         if (employee == null) {
-            throw new IllegalArgumentException(
-                    "Driver not found"
-            );
+            throw new DriverNotFoundException(id);
         }
 
         return toDriverResponse(employee);
