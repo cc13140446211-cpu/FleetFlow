@@ -63,11 +63,19 @@ export function DataTable<T>({
   );
 }
 
-export function DataTableSkeleton({ columns = 5, rows = 5 }) {
+export function DataTableSkeleton({
+  columns = 5,
+  rows = 5,
+  label = "Loading data",
+}: {
+  columns?: number;
+  rows?: number;
+  label?: string;
+}) {
   return (
     <div
       className="overflow-hidden rounded-[10px] border border-border bg-surface"
-      aria-label="Loading customers"
+      aria-label={label}
       aria-busy="true"
     >
       <div className="grid h-11 grid-cols-5 gap-6 border-b border-border px-4">

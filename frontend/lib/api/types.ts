@@ -39,4 +39,21 @@ export type Quote = {
   quoteUpdatedAt: string | null;
 };
 
+export type CreateQuoteRequest = {
+  custId: number;
+  preparedByEmpId: number;
+  quotePickupLocation: string;
+  quoteDropoffLocation: string;
+  quotePreferredPickupDate: string;
+  quotePrice: number;
+};
+
+export type UpdateQuoteStatusRequest = {
+  status: QuoteStatus;
+};
+
+export type UpdateQuotePaymentRequest = {
+  status: "PAID";
+};
+
 export type ApiErrorPayload = Record<string, string>;
