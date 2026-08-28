@@ -7,7 +7,6 @@ export default function OverviewPage() {
   return (
     <PlaceholderPage
       title="Overview"
-      description="See what needs your attention across freight operations."
       plannedContent="Operational metrics, today’s schedule, attention items, and resource status will appear here."
     />
   );

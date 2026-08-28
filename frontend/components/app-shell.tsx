@@ -1,8 +1,13 @@
 "use client";
 
-import { useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { Sidebar } from "@/components/sidebar";
-import { TopBar } from "@/components/top-bar";
+
+const OpenNavigationContext = createContext<(() => void) | null>(null);
+
+export function useOpenNavigation() {
+  return useContext(OpenNavigationContext);
+}
 
 export function AppShell({ children }: { children: React.ReactNode }) {
   const [isNavigationOpen, setIsNavigationOpen] = useState(false);
@@ -13,12 +18,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
         isOpen={isNavigationOpen}
         onClose={() => setIsNavigationOpen(false)}
       />
-      <div className="min-w-0">
-        <TopBar onOpenNavigation={() => setIsNavigationOpen(true)} />
-        <main className="mx-auto w-full max-w-[1440px] px-5 py-8 sm:px-8">
-          {children}
-        </main>
-      </div>
+      <OpenNavigationContext.Provider value={() => setIsNavigationOpen(true)}>
+        <div className="min-w-0">
+          <main className="mx-auto w-full max-w-[1440px] px-5 py-8 sm:px-8">
+            {children}
+          </main>
+        </div>
+      </OpenNavigationContext.Provider>
     </div>
   );
 }

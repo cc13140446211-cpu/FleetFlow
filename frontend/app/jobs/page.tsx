@@ -7,7 +7,6 @@ export default function JobsPage() {
   return (
     <PlaceholderPage
       title="Jobs"
-      description="Monitor scheduled and active freight operations."
       plannedContent="Job search, operational statuses, and assignment records will appear here."
     />
   );

@@ -7,7 +7,6 @@ export default function QuotesPage() {
   return (
     <PlaceholderPage
       title="Quotes"
-      description="Manage customer quotations from creation to job conversion."
       plannedContent="Quotation search, filters, statuses, and records will appear here."
     />
   );

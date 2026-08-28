@@ -7,7 +7,6 @@ export default function DriversPage() {
   return (
     <PlaceholderPage
       title="Drivers"
-      description="View driver availability and licence information."
       plannedContent="Read-only driver availability, licence, and assignment details will appear here."
     />
   );

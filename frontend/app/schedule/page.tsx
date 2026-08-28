@@ -7,7 +7,6 @@ export default function SchedulePage() {
   return (
     <PlaceholderPage
       title="Schedule"
-      description="Plan and review freight resource assignments."
       plannedContent="The driver and truck day timelines will appear here."
     />
   );
