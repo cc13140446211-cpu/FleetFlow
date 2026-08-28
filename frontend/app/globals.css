@@ -9,6 +9,14 @@
   --border: #e5e3de;
   --active: #eeece7;
   --focus: #5e6b63;
+  --success-background: #eaf1eb;
+  --success-foreground: #46604c;
+  --error-background: #f7eaea;
+  --error-foreground: #8a4b4b;
+  --warning-background: #f5efe2;
+  --warning-foreground: #806838;
+  --info-background: #eaf0f4;
+  --info-foreground: #4c6474;
 }
 
 @theme inline {
@@ -20,6 +28,14 @@
   --color-border: var(--border);
   --color-active: var(--active);
   --color-focus: var(--focus);
+  --color-success-background: var(--success-background);
+  --color-success-foreground: var(--success-foreground);
+  --color-error-background: var(--error-background);
+  --color-error-foreground: var(--error-foreground);
+  --color-warning-background: var(--warning-background);
+  --color-warning-foreground: var(--warning-foreground);
+  --color-info-background: var(--info-background);
+  --color-info-foreground: var(--info-foreground);
   --font-sans: var(--font-geist-sans);
 }
 

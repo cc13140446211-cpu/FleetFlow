@@ -1,14 +1,8 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/placeholder-page";
+import { CustomerManagement } from "@/components/customers/customer-management";
 
 export const metadata: Metadata = { title: "Customers" };
 
 export default function CustomersPage() {
-  return (
-    <PlaceholderPage
-      title="Customers"
-      description="Manage customer records and quotation history."
-      plannedContent="Customer search, contact details, and quotation history will appear here."
-    />
-  );
+  return <CustomerManagement />;
 }
