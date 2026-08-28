@@ -17,6 +17,15 @@
   --warning-foreground: #806838;
   --info-background: #eaf0f4;
   --info-foreground: #4c6474;
+
+  /* Sidebar  warm neutrals aligned with the application background. */
+  --sidebar: #eeece7;
+  --sidebar-foreground: #292929;
+  --sidebar-secondary: #66635e;
+  --sidebar-muted: #8f8b84;
+  --sidebar-hover: #e5e2dc;
+  --sidebar-active: #dcd8d0;
+  --sidebar-border: #dedbd4;
 }
 
 @theme inline {
@@ -28,6 +37,13 @@
   --color-border: var(--border);
   --color-active: var(--active);
   --color-focus: var(--focus);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-secondary: var(--sidebar-secondary);
+  --color-sidebar-muted: var(--sidebar-muted);
+  --color-sidebar-hover: var(--sidebar-hover);
+  --color-sidebar-active: var(--sidebar-active);
+  --color-sidebar-border: var(--sidebar-border);
   --color-success-background: var(--success-background);
   --color-success-foreground: var(--success-foreground);
   --color-error-background: var(--error-background);
