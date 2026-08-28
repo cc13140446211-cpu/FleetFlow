@@ -1,0 +1,53 @@
+@import "tailwindcss";
+
+:root {
+  --background: #f5f4f1;
+  --surface: #ffffff;
+  --foreground: #292929;
+  --secondary: #737373;
+  --muted: #a3a3a3;
+  --border: #e5e3de;
+  --active: #eeece7;
+  --focus: #5e6b63;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-foreground: var(--foreground);
+  --color-secondary: var(--secondary);
+  --color-muted: var(--muted);
+  --color-border: var(--border);
+  --color-active: var(--active);
+  --color-focus: var(--focus);
+  --font-sans: var(--font-geist-sans);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans), -apple-system, BlinkMacSystemFont,
+    "Segoe UI", sans-serif;
+  font-size: 14px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+:focus-visible {
+  outline: 2px solid var(--focus);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: #dfe4df;
+  color: var(--foreground);
+}
