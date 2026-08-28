@@ -251,7 +251,7 @@ function SuccessNotice({
   return (
     <div
       role="status"
-      className="flex items-center justify-between gap-4 rounded-lg bg-success-background px-4 py-3 text-success-foreground"
+      className="flex items-center justify-between gap-4 rounded-lg border border-current/15 bg-success-background px-4 py-3 text-success-foreground"
     >
       <p>{message}</p>
       <button

@@ -11,7 +11,7 @@ const statusStyles: Record<string, string> = {
 export function StatusBadge({ status }: { status: string }) {
   return (
     <span
-      className={`inline-flex rounded-full px-2.5 py-1 text-xs font-medium ${
+      className={`inline-flex rounded-full border border-current/15 px-2.5 py-1 text-xs font-semibold ${
         statusStyles[status] ?? "bg-active text-secondary"
       }`}
     >

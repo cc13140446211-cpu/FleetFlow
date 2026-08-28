@@ -36,8 +36,7 @@ export function QuoteControls({
   showCount,
   onAddQuote,
 }: QuoteControlsProps) {
-  const controlClassName =
-    "h-10 rounded-lg border border-border bg-surface px-3 text-sm text-foreground hover:border-secondary/50 focus:border-focus focus:outline-none";
+  const controlClassName = "control-field";
 
   return (
     <div className="flex w-full flex-wrap items-center gap-3">
@@ -52,7 +51,7 @@ export function QuoteControls({
         />
       </label>
 
-      <label>
+      <label className="min-w-36">
         <span className="sr-only">Filter by quote status</span>
         <select
           value={status}
@@ -70,7 +69,7 @@ export function QuoteControls({
         </select>
       </label>
 
-      <label>
+      <label className="min-w-40">
         <span className="sr-only">Filter by preferred pickup date</span>
         <input
           type="date"
@@ -89,7 +88,7 @@ export function QuoteControls({
       <button
         type="button"
         onClick={onAddQuote}
-        className="ml-auto h-10 shrink-0 rounded-lg bg-foreground px-4 font-medium text-white transition-colors hover:bg-foreground/90"
+        className="button-primary ml-auto shrink-0"
       >
         <span aria-hidden="true" className="mr-1.5">
           +
@@ -222,7 +221,7 @@ export function QuoteList({
               event.stopPropagation();
               onOpenQuote(quote);
             }}
-            className="rounded-md px-2 py-1 font-medium text-secondary hover:bg-active hover:text-foreground"
+            className="rounded-md px-2 py-1 font-medium text-secondary transition-colors hover:bg-accent-soft hover:text-accent-foreground"
           >
             View
           </button>
@@ -240,14 +239,14 @@ export function QuoteList({
     return (
       <div
         role="alert"
-        className="rounded-[10px] border border-border bg-surface px-6 py-12 text-center"
+        className="panel rounded-[10px] px-6 py-12 text-center"
       >
         <h2 className="text-base font-semibold">Unable to load quotes</h2>
         <p className="mx-auto mt-2 max-w-md text-secondary">{error}</p>
         <button
           type="button"
           onClick={onRetry}
-          className="mt-5 h-10 rounded-lg border border-border bg-surface px-4 font-medium transition-colors hover:bg-active"
+          className="button-secondary mt-5"
         >
           Retry
         </button>
@@ -270,7 +269,7 @@ export function QuoteList({
   const hasQuotes = totalCount > 0;
 
   return (
-    <div className="rounded-[10px] border border-border bg-surface px-6 py-12 text-center">
+    <div className="panel rounded-[10px] px-6 py-12 text-center">
       <h2 className="text-base font-semibold">
         {hasQuotes ? "No quotes found" : "No quotations yet"}
       </h2>
@@ -283,7 +282,7 @@ export function QuoteList({
         <button
           type="button"
           onClick={onAddQuote}
-          className="mt-5 h-10 rounded-lg bg-foreground px-4 font-medium text-white transition-colors hover:bg-foreground/90"
+          className="button-primary mt-5"
         >
           Add quote
         </button>

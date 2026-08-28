@@ -81,7 +81,7 @@ export function CustomerDetail({
         <button
           type="button"
           onClick={onRetry}
-          className="mt-5 h-10 rounded-lg border border-border bg-surface px-4 font-medium transition-colors hover:bg-active"
+          className="button-secondary mt-5"
         >
           Retry
         </button>
@@ -154,7 +154,7 @@ export function CustomerDetail({
             getRowKey={(quote) => quote.quoteId}
           />
         ) : (
-          <div className="rounded-[10px] border border-border bg-surface px-5 py-8 text-center">
+          <div className="panel rounded-[10px] px-5 py-8 text-center">
             <p className="font-medium">No quotations yet</p>
             <p className="mt-1 text-sm text-secondary">
               This customer does not have any quotation history.

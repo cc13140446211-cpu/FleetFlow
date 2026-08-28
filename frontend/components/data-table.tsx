@@ -23,10 +23,10 @@ export function DataTable<T>({
   getRowLabel,
 }: DataTableProps<T>) {
   return (
-    <div className="overflow-x-auto rounded-[10px] border border-border bg-surface">
+    <div className="panel overflow-x-auto rounded-[10px]">
       <table className="w-full min-w-[760px] border-collapse text-left">
         <thead>
-          <tr className="border-b border-border">
+          <tr className="border-b border-border-strong bg-surface-subtle">
             {columns.map((column) => (
               <th
                 key={column.key}
@@ -44,7 +44,7 @@ export function DataTable<T>({
               key={getRowKey(row)}
               className={`h-14 border-b border-border last:border-b-0 ${
                 onRowClick
-                  ? "cursor-pointer transition-colors hover:bg-active/50 focus-within:bg-active/50"
+                  ? "cursor-pointer transition-colors hover:bg-accent-soft/50 focus-within:bg-accent-soft/50"
                   : ""
               }`}
               onClick={onRowClick ? () => onRowClick(row) : undefined}
@@ -74,11 +74,11 @@ export function DataTableSkeleton({
 }) {
   return (
     <div
-      className="overflow-hidden rounded-[10px] border border-border bg-surface"
+      className="panel overflow-hidden rounded-[10px]"
       aria-label={label}
       aria-busy="true"
     >
-      <div className="grid h-11 grid-cols-5 gap-6 border-b border-border px-4">
+      <div className="grid h-11 grid-cols-5 gap-6 border-b border-border-strong bg-surface-subtle px-4">
         {Array.from({ length: columns }).map((_, index) => (
           <div
             key={index}

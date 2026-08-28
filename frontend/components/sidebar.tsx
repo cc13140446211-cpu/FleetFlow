@@ -85,7 +85,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                 onClick={onClose} 
                 className="block rounded-sm"
           >
-            <span className="block text-[15px] font-semibold tracking-[0.12em] text-sidebar-foreground">
+            <span className="block text-[15px] font-semibold tracking-[0.12em] text-accent-foreground">
               FLEETFLOW
             </span>
             <span className="mt-0.5 block text-xs text-sidebar-muted">
@@ -140,7 +140,7 @@ export function Sidebar({ isOpen, onClose }: SidebarProps) {
                               onClick={onClose}
                               className={`flex h-10 items-center rounded-lg pl-10 pr-3 font-normal transition-colors ${
                                 isActive
-                                  ? "bg-sidebar-active text-sidebar-foreground"
+                                  ? "bg-sidebar-active text-accent-foreground shadow-[inset_3px_0_0_var(--accent)]"
                                   : "text-sidebar-secondary hover:bg-sidebar-hover hover:text-sidebar-foreground"
                               }`}
                             >

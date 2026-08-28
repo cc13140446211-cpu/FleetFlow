@@ -13,7 +13,7 @@ export function PlaceholderPage({
     <div className="space-y-8">
       <PageHeader title={title} />
       <section className="border-t border-border pt-8" aria-label={`${title} content`}>
-        <div className="min-h-[280px] max-w-2xl border-l border-border pl-6">
+        <div className="min-h-[280px] max-w-2xl border-l-2 border-accent-border pl-6">
           <h2 className="text-base font-semibold">Workspace ready</h2>
           <p className="mt-2 max-w-xl text-secondary">
             {plannedContent} This area is intentionally left as a placeholder for

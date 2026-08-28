@@ -7,7 +7,7 @@ export function UserIdentity() {
       </div>
       <div
         aria-label="Signed in as Dispatcher"
-        className="grid size-9 place-items-center rounded-full bg-active text-xs font-semibold"
+        className="grid size-9 place-items-center rounded-full border border-accent-border bg-accent-soft text-xs font-semibold text-accent-foreground"
       >
         YC
       </div>

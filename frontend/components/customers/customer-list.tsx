@@ -46,7 +46,7 @@ export function CustomerToolbar({
           value={search}
           onChange={(event) => onSearchChange(event.target.value)}
           placeholder="Search customers…"
-          className="h-10 w-full rounded-lg border border-border bg-surface px-3 text-sm placeholder:text-muted hover:border-secondary/50 focus:border-focus focus:outline-none"
+          className="control-field"
         />
       </label>
 
@@ -59,7 +59,7 @@ export function CustomerToolbar({
       <button
         type="button"
         onClick={onAddCustomer}
-        className="ml-auto h-10 shrink-0 rounded-lg bg-foreground px-3 font-medium text-white transition-colors hover:bg-foreground/90 sm:px-4"
+        className="button-primary ml-auto shrink-0 px-3 sm:px-4"
       >
         <span aria-hidden="true" className="mr-1.5">
           +
@@ -138,7 +138,7 @@ export function CustomerList({
               event.stopPropagation();
               onOpenCustomer(customer);
             }}
-            className="rounded-md px-2 py-1 text-sm font-medium text-secondary hover:bg-active hover:text-foreground"
+            className="rounded-md px-2 py-1 text-sm font-medium text-secondary transition-colors hover:bg-accent-soft hover:text-accent-foreground"
           >
             View
           </button>
@@ -153,7 +153,7 @@ export function CustomerList({
   if (error) {
     return (
       <div
-        className="rounded-[10px] border border-border bg-surface px-6 py-12 text-center"
+        className="panel rounded-[10px] px-6 py-12 text-center"
         role="alert"
       >
         <h2 className="text-base font-semibold">Unable to load customers</h2>
@@ -161,7 +161,7 @@ export function CustomerList({
         <button
           type="button"
           onClick={onRetry}
-          className="mt-5 h-10 rounded-lg border border-border bg-surface px-4 font-medium transition-colors hover:bg-active"
+          className="button-secondary mt-5"
         >
           Retry
         </button>
@@ -184,7 +184,7 @@ export function CustomerList({
   const hasCustomers = totalCount > 0;
 
   return (
-    <div className="rounded-[10px] border border-border bg-surface px-6 py-12 text-center">
+    <div className="panel rounded-[10px] px-6 py-12 text-center">
       <h2 className="text-base font-semibold">
         {hasCustomers ? "No customers found" : "No customers yet"}
       </h2>
@@ -197,7 +197,7 @@ export function CustomerList({
         <button
           type="button"
           onClick={onAddCustomer}
-          className="mt-5 h-10 rounded-lg bg-foreground px-4 font-medium text-white transition-colors hover:bg-foreground/90"
+          className="button-primary mt-5"
         >
           Add customer
         </button>

@@ -64,7 +64,7 @@ export function QuoteDetail({
         <button
           type="button"
           onClick={onRetry}
-          className="mt-5 h-10 rounded-lg border border-border bg-surface px-4 font-medium transition-colors hover:bg-active"
+          className="button-secondary mt-5"
         >
           Retry
         </button>
@@ -82,7 +82,7 @@ export function QuoteDetail({
       {actionMessage ? (
         <div
           role="status"
-          className="rounded-lg bg-success-background px-4 py-3 text-success-foreground"
+          className="rounded-lg border border-current/15 bg-success-background px-4 py-3 text-success-foreground"
         >
           {actionMessage}
         </div>
@@ -90,7 +90,7 @@ export function QuoteDetail({
       {actionError ? (
         <div
           role="alert"
-          className="rounded-lg bg-error-background px-4 py-3 text-error-foreground"
+          className="rounded-lg border border-current/15 bg-error-background px-4 py-3 text-error-foreground"
         >
           {actionError}
         </div>
@@ -180,9 +180,9 @@ function QuoteActions({
   onRecordPayment: () => void;
 }) {
   const secondaryButton =
-    "h-10 rounded-lg border border-border bg-surface px-4 font-medium transition-colors hover:bg-active disabled:cursor-not-allowed disabled:opacity-60";
+    "button-secondary";
   const primaryButton =
-    "h-10 rounded-lg bg-foreground px-4 font-medium text-white transition-colors hover:bg-foreground/90 disabled:cursor-not-allowed disabled:opacity-60";
+    "button-primary";
 
   if (quote.quoteStatus === "PENDING") {
     return (
@@ -231,7 +231,7 @@ function QuoteActions({
         {canSchedule ? (
           <Link
             href={`/schedule?quoteId=${quote.quoteId}`}
-            className="inline-flex h-10 items-center rounded-lg border border-foreground px-4 font-medium transition-colors hover:bg-active"
+            className="button-secondary border-accent-border text-accent-foreground"
           >
             Schedule job
             <span aria-hidden="true" className="ml-1.5">

@@ -1,41 +1,61 @@
 @import "tailwindcss";
 
 :root {
-  --background: #f5f4f1;
-  --surface: #ffffff;
-  --foreground: #292929;
-  --secondary: #737373;
-  --muted: #a3a3a3;
-  --border: #e5e3de;
-  --active: #eeece7;
-  --focus: #5e6b63;
-  --success-background: #eaf1eb;
-  --success-foreground: #46604c;
-  --error-background: #f7eaea;
-  --error-foreground: #8a4b4b;
-  --warning-background: #f5efe2;
-  --warning-foreground: #806838;
-  --info-background: #eaf0f4;
-  --info-foreground: #4c6474;
+  --background: #f4f1eb;
+  --surface: #fffdf9;
+  --surface-subtle: #faf7f1;
+  --foreground: #2c2925;
+  --secondary: #6f6a63;
+  --muted: #99928a;
+  --border: #e4ded4;
+  --border-strong: #d7cfc3;
+  --active: #eee9e1;
+
+  /* A restrained, operational accent: warm enough to belong to FleetFlow,
+     deep enough to remain legible on light surfaces. */
+  --accent: #9a603b;
+  --accent-hover: #814e2f;
+  --accent-foreground: #754529;
+  --accent-soft: #f3e7dc;
+  --accent-soft-hover: #ecddd0;
+  --accent-border: #ddc1aa;
+  --focus: #9a603b;
+
+  --success-background: #e8f0e9;
+  --success-foreground: #3f6248;
+  --error-background: #f6e9e7;
+  --error-foreground: #8b4843;
+  --warning-background: #f5eddd;
+  --warning-foreground: #785e2f;
+  --info-background: #e7eef1;
+  --info-foreground: #466371;
 
   /* Sidebar  warm neutrals aligned with the application background. */
-  --sidebar: #eeece7;
-  --sidebar-foreground: #292929;
-  --sidebar-secondary: #66635e;
-  --sidebar-muted: #8f8b84;
-  --sidebar-hover: #e5e2dc;
-  --sidebar-active: #dcd8d0;
-  --sidebar-border: #dedbd4;
+  --sidebar: #eee9e1;
+  --sidebar-foreground: #2c2925;
+  --sidebar-secondary: #645f58;
+  --sidebar-muted: #8b847a;
+  --sidebar-hover: #e7e0d6;
+  --sidebar-active: #f3e4d7;
+  --sidebar-border: #d9d0c4;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-surface: var(--surface);
+  --color-surface-subtle: var(--surface-subtle);
   --color-foreground: var(--foreground);
   --color-secondary: var(--secondary);
   --color-muted: var(--muted);
   --color-border: var(--border);
+  --color-border-strong: var(--border-strong);
   --color-active: var(--active);
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-soft-hover: var(--accent-soft-hover);
+  --color-accent-border: var(--accent-border);
   --color-focus: var(--focus);
   --color-sidebar: var(--sidebar);
   --color-sidebar-foreground: var(--sidebar-foreground);
@@ -69,6 +89,97 @@ body {
   margin: 0;
 }
 
+@layer components {
+  .panel {
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+  }
+
+  .control-field {
+    height: 2.5rem;
+    width: 100%;
+    border: 1px solid var(--border);
+    border-radius: 0.5rem;
+    background: var(--surface-subtle);
+    color: var(--foreground);
+    font-size: 0.875rem;
+    padding-inline: 0.75rem;
+    transition:
+      border-color 150ms ease,
+      background-color 150ms ease,
+      box-shadow 150ms ease;
+  }
+
+  .control-field::placeholder {
+    color: var(--muted);
+  }
+
+  .control-field:hover {
+    border-color: var(--border-strong);
+    background: var(--surface);
+  }
+
+  .control-field:focus {
+    border-color: var(--accent);
+    background: var(--surface);
+    box-shadow: 0 0 0 3px var(--accent-soft);
+    outline: none;
+  }
+
+  .control-field:focus-visible {
+    outline: none;
+  }
+
+  .control-field:disabled {
+    cursor: not-allowed;
+    background: var(--active);
+  }
+
+  .button-primary,
+  .button-secondary {
+    display: inline-flex;
+    height: 2.5rem;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0.5rem;
+    padding-inline: 1rem;
+    font-weight: 500;
+    transition:
+      background-color 150ms ease,
+      border-color 150ms ease,
+      color 150ms ease;
+  }
+
+  .button-primary {
+    border: 1px solid var(--accent);
+    background: var(--accent);
+    color: #fffdf9;
+  }
+
+  .button-primary:hover {
+    border-color: var(--accent-hover);
+    background: var(--accent-hover);
+  }
+
+  .button-secondary {
+    border: 1px solid var(--border-strong);
+    background: var(--surface);
+    color: var(--foreground);
+  }
+
+  .button-secondary:hover {
+    border-color: var(--accent-border);
+    background: var(--accent-soft);
+    color: var(--accent-foreground);
+  }
+
+  .button-primary:disabled,
+  .button-secondary:disabled {
+    cursor: not-allowed;
+    opacity: 0.58;
+  }
+}
+
 button,
 a {
   -webkit-tap-highlight-color: transparent;
@@ -80,6 +191,6 @@ a {
 }
 
 ::selection {
-  background: #dfe4df;
+  background: var(--accent-soft);
   color: var(--foreground);
 }

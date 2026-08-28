@@ -26,13 +26,13 @@ export function PageHeader({ title, action }: PageHeaderProps) {
         </span>
       </button>
 
-      <h1 className="min-w-0 flex-1 truncate text-2xl font-semibold leading-[1.2] tracking-[-0.025em] sm:text-[30px]">
+      <h1 className="min-w-0 flex-1 truncate text-2xl font-semibold leading-[1.2] tracking-[-0.025em] text-foreground sm:text-[30px]">
         {title}
       </h1>
 
       <div className="ml-auto flex shrink-0 items-center gap-2">
         {action}
-        {action ? <span className="mx-1 hidden h-6 w-px bg-border sm:block" /> : null}
+        {action ? <span className="mx-1 hidden h-6 w-px bg-border-strong sm:block" /> : null}
         <UserIdentity />
       </div>
     </header>

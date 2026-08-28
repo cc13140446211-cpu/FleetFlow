@@ -33,7 +33,7 @@ const initialValues: FormValues = {
 };
 
 const inputClassName =
-  "h-10 w-full rounded-lg border border-border bg-surface px-3 text-sm text-foreground transition-colors placeholder:text-muted hover:border-secondary/50 focus:border-focus focus:outline-none disabled:cursor-not-allowed disabled:bg-active";
+  "control-field";
 
 function validate(values: FormValues): FormErrors {
   const errors: FormErrors = {};
@@ -134,7 +134,7 @@ export function QuoteForm({ customers, onCancel, onCreated }: QuoteFormProps) {
         </p>
         <Link
           href="/customers"
-          className="mt-5 inline-flex h-10 items-center rounded-lg border border-border px-4 font-medium transition-colors hover:bg-active"
+          className="button-secondary mt-5"
         >
           Go to customers
         </Link>
@@ -148,7 +148,7 @@ export function QuoteForm({ customers, onCancel, onCreated }: QuoteFormProps) {
         {formError ? (
           <div
             role="alert"
-            className="rounded-lg bg-error-background px-4 py-3 text-sm text-error-foreground"
+            className="rounded-lg border border-current/15 bg-error-background px-4 py-3 text-sm text-error-foreground"
           >
             {formError}
           </div>
@@ -282,14 +282,14 @@ export function QuoteForm({ customers, onCancel, onCreated }: QuoteFormProps) {
           type="button"
           onClick={onCancel}
           disabled={isSubmitting}
-          className="h-10 rounded-lg border border-border bg-surface px-4 font-medium transition-colors hover:bg-active disabled:cursor-not-allowed disabled:opacity-60"
+          className="button-secondary"
         >
           Cancel
         </button>
         <button
           type="submit"
           disabled={isSubmitting}
-          className="h-10 rounded-lg bg-foreground px-4 font-medium text-white transition-colors hover:bg-foreground/90 disabled:cursor-not-allowed disabled:opacity-60"
+          className="button-primary"
         >
           {isSubmitting ? "Creating quote…" : "Create quote"}
         </button>
