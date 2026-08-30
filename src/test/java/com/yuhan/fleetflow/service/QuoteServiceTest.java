@@ -1,12 +1,15 @@
 package com.yuhan.fleetflow.service;
 
 import com.yuhan.fleetflow.dto.request.UpdateQuotePaymentRequest;
+import com.yuhan.fleetflow.dto.request.UpdateQuoteRequest;
 import com.yuhan.fleetflow.dto.request.UpdateQuoteStatusRequest;
 import com.yuhan.fleetflow.exception.InvalidQuoteStateException;
 import com.yuhan.fleetflow.mapper.CustomerMapper;
 import com.yuhan.fleetflow.mapper.EmployeeMapper;
 import com.yuhan.fleetflow.mapper.QuoteMapper;
 import com.yuhan.fleetflow.model.Quote;
+import com.yuhan.fleetflow.model.Customer;
+import com.yuhan.fleetflow.model.Employee;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -224,6 +227,52 @@ public class QuoteServiceTest {
                         anyLong(),
                         anyString()
                 );
+    }
+
+    @Test
+    void shouldUpdatePendingQuote() {
+        Quote pending = createQuote("PENDING", "UNPAID");
+        Quote updated = createQuote("PENDING", "UNPAID");
+        updated.setQuotePickupLocation("Johor Bahru");
+
+        Customer customer = new Customer();
+        customer.setCustId(2L);
+        Employee dispatcher = new Employee();
+        dispatcher.setEmpId(3L);
+        dispatcher.setEmpRole("DISPATCHER");
+
+        when(quoteMapper.findById(1L)).thenReturn(pending, updated);
+        when(customerMapper.findById(2L)).thenReturn(customer);
+        when(employeeMapper.findById(3L)).thenReturn(dispatcher);
+
+        UpdateQuoteRequest request = createUpdateQuoteRequest();
+        Quote result = quoteService.updateQuote(1L, request);
+
+        assertEquals("Johor Bahru", result.getQuotePickupLocation());
+        verify(quoteMapper).update(any(Quote.class));
+    }
+
+    @Test
+    void shouldRejectEditingNonPendingQuote() {
+        when(quoteMapper.findById(1L)).thenReturn(createQuote("ACCEPTED", "UNPAID"));
+
+        assertThrows(
+                InvalidQuoteStateException.class,
+                () -> quoteService.updateQuote(1L, createUpdateQuoteRequest())
+        );
+
+        verify(quoteMapper, never()).update(any(Quote.class));
+    }
+
+    private UpdateQuoteRequest createUpdateQuoteRequest() {
+        UpdateQuoteRequest request = new UpdateQuoteRequest();
+        request.setCustId(2L);
+        request.setPreparedByEmpId(3L);
+        request.setQuotePickupLocation("Johor Bahru");
+        request.setQuoteDropoffLocation("Kuala Lumpur");
+        request.setQuotePreferredPickupDate(java.time.LocalDate.of(2026, 9, 2));
+        request.setQuotePrice(new java.math.BigDecimal("1500.00"));
+        return request;
     }
 
     private Quote createQuote(

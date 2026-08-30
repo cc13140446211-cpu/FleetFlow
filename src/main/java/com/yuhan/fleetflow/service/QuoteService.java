@@ -1,6 +1,7 @@
 package com.yuhan.fleetflow.service;
 
 import com.yuhan.fleetflow.dto.request.CreateQuoteRequest;
+import com.yuhan.fleetflow.dto.request.UpdateQuoteRequest;
 import com.yuhan.fleetflow.dto.request.UpdateQuotePaymentRequest;
 import com.yuhan.fleetflow.exception.*;
 import com.yuhan.fleetflow.mapper.CustomerMapper;
@@ -86,6 +87,50 @@ public class QuoteService {
         quoteMapper.insert(quote);
 
         return quoteMapper.findById(quote.getQuoteId());
+    }
+
+    public Quote updateQuote(Long id, UpdateQuoteRequest request) {
+        Quote quote = getQuoteById(id);
+
+        if (!"PENDING".equals(quote.getQuoteStatus())) {
+            throw new InvalidQuoteStateException(
+                    "Only PENDING quotes can be edited"
+            );
+        }
+
+        validateCustomerAndDispatcher(
+                request.getCustId(),
+                request.getPreparedByEmpId()
+        );
+
+        quote.setCustId(request.getCustId());
+        quote.setPreparedByEmpId(request.getPreparedByEmpId());
+        quote.setQuotePickupLocation(request.getQuotePickupLocation());
+        quote.setQuoteDropoffLocation(request.getQuoteDropoffLocation());
+        quote.setQuotePreferredPickupDate(request.getQuotePreferredPickupDate());
+        quote.setQuotePrice(request.getQuotePrice());
+
+        quoteMapper.update(quote);
+
+        return getQuoteById(id);
+    }
+
+    private void validateCustomerAndDispatcher(Long customerId, Long employeeId) {
+        Customer customer = customerMapper.findById(customerId);
+
+        if (customer == null) {
+            throw new CustomerNotFoundException(customerId);
+        }
+
+        Employee employee = employeeMapper.findById(employeeId);
+
+        if (employee == null) {
+            throw new EmployeeNotFoundException(employeeId);
+        }
+
+        if (!"DISPATCHER".equals(employee.getEmpRole())) {
+            throw new InvalidEmployeeRoleException(employee.getEmpId(), "DISPATCHER");
+        }
     }
 
     public Quote updateQuoteStatus(

@@ -81,6 +81,18 @@ public interface QuoteMapper {
     """)
     int updatePaymentStatus(Long id, String status);
 
+    @Update("""
+    UPDATE quote
+    SET cust_id = #{custId},
+        prepared_by_emp_id = #{preparedByEmpId},
+        quote_pickup_location = #{quotePickupLocation},
+        quote_dropoff_location = #{quoteDropoffLocation},
+        quote_preferred_pickup_date = #{quotePreferredPickupDate},
+        quote_price = #{quotePrice}
+    WHERE quote_id = #{quoteId}
+    """)
+    int update(Quote quote);
+
     @Select("""
     SELECT
         quote_id AS quoteId,

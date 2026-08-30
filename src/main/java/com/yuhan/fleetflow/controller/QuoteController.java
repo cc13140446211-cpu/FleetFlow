@@ -1,6 +1,7 @@
 package com.yuhan.fleetflow.controller;
 
 import com.yuhan.fleetflow.dto.request.CreateQuoteRequest;
+import com.yuhan.fleetflow.dto.request.UpdateQuoteRequest;
 import com.yuhan.fleetflow.dto.request.UpdateQuotePaymentRequest;
 import com.yuhan.fleetflow.dto.request.UpdateQuoteStatusRequest;
 import com.yuhan.fleetflow.model.Quote;
@@ -35,6 +36,14 @@ public class QuoteController {
             @Valid @RequestBody CreateQuoteRequest request
     ) {
         return quoteService.createQuote(request);
+    }
+
+    @PutMapping("/{id}")
+    public Quote updateQuote(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateQuoteRequest request
+    ) {
+        return quoteService.updateQuote(id, request);
     }
 
     @PatchMapping("/{id}/status")
