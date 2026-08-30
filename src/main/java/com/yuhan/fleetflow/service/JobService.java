@@ -148,6 +148,12 @@ public class JobService {
             );
         }
 
+        if (request.getJobPickupDatetime().isBefore(LocalDateTime.now())) {
+            throw new InvalidJobScheduleException(
+                    "Pickup time cannot be in the past"
+            );
+        }
+
         Job job = new Job();
 
         job.setQuoteId(quoteId);
@@ -248,6 +254,12 @@ public class JobService {
         if (!dropoffTime.isAfter(pickupTime)) {
             throw new InvalidJobStateException(
                     "Expected drop-off time must be after pickup time"
+            );
+        }
+
+        if (request.getJobPickupDatetime().isBefore(LocalDateTime.now())) {
+            throw new InvalidJobScheduleException(
+                    "Pickup time cannot be in the past"
             );
         }
 
