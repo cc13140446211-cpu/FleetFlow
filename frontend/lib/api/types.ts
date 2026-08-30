@@ -56,4 +56,24 @@ export type UpdateQuotePaymentRequest = {
   status: "PAID";
 };
 
+export type JobStatus =
+  | "SCHEDULED"
+  | "IN_PROGRESS"
+  | "COMPLETED"
+  | "CANCELLED";
+
+export type Job = {
+  jobId: number;
+  quoteId: number;
+  driverEmpId: number;
+  scheduledByEmpId: number;
+  truckId: number;
+  jobPickupDatetime: string;
+  jobExpectedDropoffDatetime: string;
+  jobFinalPrice: number;
+  jobStatus: JobStatus;
+  jobCreatedAt: string;
+  jobUpdatedAt: string;
+};
+
 export type ApiErrorPayload = Record<string, string>;

@@ -1,13 +1,8 @@
 import type { Metadata } from "next";
-import { PlaceholderPage } from "@/components/placeholder-page";
+import { JobManagement } from "@/components/jobs/job-management";
 
 export const metadata: Metadata = { title: "Jobs" };
 
 export default function JobsPage() {
-  return (
-    <PlaceholderPage
-      title="Jobs"
-      plannedContent="Job search, operational statuses, and assignment records will appear here."
-    />
-  );
+  return <JobManagement />;
 }
