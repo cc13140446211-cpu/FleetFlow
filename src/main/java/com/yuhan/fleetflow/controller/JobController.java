@@ -1,6 +1,7 @@
 package com.yuhan.fleetflow.controller;
 
 import com.yuhan.fleetflow.dto.request.CreateJobRequest;
+import com.yuhan.fleetflow.dto.request.UpdateJobRequest;
 import com.yuhan.fleetflow.dto.request.UpdateJobStatusRequest;
 import com.yuhan.fleetflow.model.Job;
 import com.yuhan.fleetflow.service.JobService;
@@ -39,6 +40,14 @@ public class JobController {
             @Valid @RequestBody UpdateJobStatusRequest request
     ) {
         return jobService.updateJobStatus(id, request);
+    }
+
+    @PutMapping("/api/jobs/{id}")
+    public Job updateJob(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateJobRequest request
+    ) {
+        return jobService.updateJob(id, request);
     }
 
     @GetMapping("/api/jobs")

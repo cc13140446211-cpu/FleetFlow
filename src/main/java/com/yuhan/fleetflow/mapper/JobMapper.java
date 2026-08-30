@@ -103,6 +103,49 @@ public interface JobMapper {
             LocalDateTime newEnd
     );
 
+    @Select("""
+            SELECT COUNT(*)
+            FROM job
+            WHERE driver_emp_id = #{driverEmpId}
+              AND job_id <> #{jobId}
+              AND job_status IN ('SCHEDULED', 'IN_PROGRESS')
+              AND job_pickup_datetime < #{newEnd}
+              AND job_expected_dropoff_datetime > #{newStart}
+            """)
+    int countDriverConflictsExcludingJob(
+            Long driverEmpId,
+            Long jobId,
+            LocalDateTime newStart,
+            LocalDateTime newEnd
+    );
+
+    @Select("""
+            SELECT COUNT(*)
+            FROM job
+            WHERE truck_id = #{truckId}
+              AND job_id <> #{jobId}
+              AND job_status IN ('SCHEDULED', 'IN_PROGRESS')
+              AND job_pickup_datetime < #{newEnd}
+              AND job_expected_dropoff_datetime > #{newStart}
+            """)
+    int countTruckConflictsExcludingJob(
+            Long truckId,
+            Long jobId,
+            LocalDateTime newStart,
+            LocalDateTime newEnd
+    );
+
+    @Update("""
+            UPDATE job
+            SET driver_emp_id = #{driverEmpId},
+                truck_id = #{truckId},
+                job_pickup_datetime = #{jobPickupDatetime},
+                job_expected_dropoff_datetime = #{jobExpectedDropoffDatetime},
+                job_final_price = #{jobFinalPrice}
+            WHERE job_id = #{jobId}
+            """)
+    int update(Job job);
+
     @Update("""
             UPDATE job
             SET job_status = #{status}

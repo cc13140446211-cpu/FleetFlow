@@ -1,6 +1,7 @@
 package com.yuhan.fleetflow.service;
 
 import com.yuhan.fleetflow.dto.request.CreateJobRequest;
+import com.yuhan.fleetflow.dto.request.UpdateJobRequest;
 import com.yuhan.fleetflow.dto.request.UpdateJobStatusRequest;
 import com.yuhan.fleetflow.exception.*;
 import com.yuhan.fleetflow.mapper.EmployeeMapper;
@@ -213,6 +214,68 @@ public class JobService {
         jobMapper.updateStatus(id, newStatus);
 
         return jobMapper.findById(id);
+    }
+
+    @Transactional
+    public Job updateJob(Long id, UpdateJobRequest request) {
+        Job job = getJobById(id);
+
+        if (!"SCHEDULED".equals(job.getJobStatus())) {
+            throw new InvalidJobStateException(
+                    "Only SCHEDULED jobs can be edited"
+            );
+        }
+
+        Employee driver = employeeMapper.findById(request.getDriverEmpId());
+
+        if (driver == null) {
+            throw new EmployeeNotFoundException(request.getDriverEmpId());
+        }
+
+        if (!"DRIVER".equals(driver.getEmpRole())) {
+            throw new InvalidEmployeeRoleException(driver.getEmpId(), "DRIVER");
+        }
+
+        if (truckMapper.existsById(request.getTruckId()) == 0) {
+            throw new ResourceNotFoundException(
+                    "Truck not found with id: " + request.getTruckId()
+            );
+        }
+
+        LocalDateTime pickupTime = request.getJobPickupDatetime();
+        LocalDateTime dropoffTime = request.getJobExpectedDropoffDatetime();
+
+        if (!dropoffTime.isAfter(pickupTime)) {
+            throw new InvalidJobStateException(
+                    "Expected drop-off time must be after pickup time"
+            );
+        }
+
+        if (jobMapper.countDriverConflictsExcludingJob(
+                request.getDriverEmpId(), id, pickupTime, dropoffTime) > 0) {
+            throw new ResourceUnavailableException(
+                    "Driver " + request.getDriverEmpId()
+                            + " is unavailable during the requested time"
+            );
+        }
+
+        if (jobMapper.countTruckConflictsExcludingJob(
+                request.getTruckId(), id, pickupTime, dropoffTime) > 0) {
+            throw new ResourceUnavailableException(
+                    "Truck " + request.getTruckId()
+                            + " is unavailable during the requested time"
+            );
+        }
+
+        job.setDriverEmpId(request.getDriverEmpId());
+        job.setTruckId(request.getTruckId());
+        job.setJobPickupDatetime(pickupTime);
+        job.setJobExpectedDropoffDatetime(dropoffTime);
+        job.setJobFinalPrice(request.getJobFinalPrice());
+
+        jobMapper.update(job);
+
+        return getJobById(id);
     }
 
     private boolean isValidJobStatus(String status) {
