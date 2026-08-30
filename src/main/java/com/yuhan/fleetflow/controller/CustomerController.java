@@ -1,6 +1,7 @@
 package com.yuhan.fleetflow.controller;
 
 import com.yuhan.fleetflow.dto.request.CreateCustomerRequest;
+import com.yuhan.fleetflow.dto.request.UpdateCustomerRequest;
 import com.yuhan.fleetflow.model.Customer;
 import com.yuhan.fleetflow.model.Quote;
 import com.yuhan.fleetflow.service.CustomerService;
@@ -36,6 +37,13 @@ public class CustomerController {
     public Customer createCustomer(
             @Valid @RequestBody CreateCustomerRequest request) {
         return customerService.createCustomer(request);
+    }
+
+    @PutMapping("/{id}")
+    public Customer updateCustomer(
+            @PathVariable Long id,
+            @Valid @RequestBody UpdateCustomerRequest request) {
+        return customerService.updateCustomer(id, request);
     }
 
     @GetMapping("/{id}/quotes")

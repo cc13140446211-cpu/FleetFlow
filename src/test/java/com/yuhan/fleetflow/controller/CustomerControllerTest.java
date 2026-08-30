@@ -1,6 +1,7 @@
 package com.yuhan.fleetflow.controller;
 
 import com.yuhan.fleetflow.dto.request.CreateCustomerRequest;
+import com.yuhan.fleetflow.dto.request.UpdateCustomerRequest;
 import com.yuhan.fleetflow.model.Customer;
 import com.yuhan.fleetflow.service.CustomerService;
 
@@ -17,6 +18,7 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -134,5 +136,37 @@ class CustomerControllerTest {
                         jsonPath("$.custEmail")
                                 .value("contact@abc.com")
                 );
+    }
+
+    @Test
+    void shouldUpdateCustomerWhenRequestIsValid() throws Exception {
+        String requestBody = """
+                {
+                    "custName": "Updated Logistics",
+                    "custCompanyName": "Updated Logistics Sdn Bhd",
+                    "custPhone": "0198765432",
+                    "custEmail": "updated@example.com",
+                    "custAddress": "Johor Bahru"
+                }
+                """;
+
+        Customer customer = new Customer();
+        customer.setCustId(1L);
+        customer.setCustName("Updated Logistics");
+        customer.setCustEmail("updated@example.com");
+
+        when(customerService.updateCustomer(
+                org.mockito.ArgumentMatchers.eq(1L),
+                any(UpdateCustomerRequest.class)
+        )).thenReturn(customer);
+
+        mockMvc.perform(
+                        put("/api/customers/1")
+                                .contentType(MediaType.APPLICATION_JSON)
+                                .content(requestBody)
+                )
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.custId").value(1))
+                .andExpect(jsonPath("$.custName").value("Updated Logistics"));
     }
 }

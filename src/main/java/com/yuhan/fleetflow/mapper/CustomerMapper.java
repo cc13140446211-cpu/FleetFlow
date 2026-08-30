@@ -53,4 +53,15 @@ public interface CustomerMapper {
     """)
     @Options(useGeneratedKeys = true, keyProperty = "custId")
     int insert(Customer customer);
+
+    @Update("""
+        UPDATE customer
+        SET cust_name = #{custName},
+            cust_company_name = #{custCompanyName},
+            cust_phone = #{custPhone},
+            cust_email = #{custEmail},
+            cust_address = #{custAddress}
+        WHERE cust_id = #{custId}
+        """)
+    int update(Customer customer);
 }
